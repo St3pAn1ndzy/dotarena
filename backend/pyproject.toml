@@ -1,0 +1,41 @@
+[project]
+name = "dotarena"
+version = "0.1.0"
+description = "Dota 2 статистика и баттлы в Telegram Mini App"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.34,<1",
+    "sqlalchemy[asyncio]>=2.0,<3",
+    "asyncpg>=0.30,<1",
+    "redis[hiredis]>=5.2,<6",
+    "arq>=0.28,<1",
+    "aiogram>=3.17,<4",
+    "aiohttp>=3.11,<4",
+    "pydantic-settings>=2.7,<3",
+    "alembic>=1.14,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0,<25",
+    "ruff>=0.9,<1",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[build-system]
+requires = ["setuptools>=75,<76"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ["py314"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
