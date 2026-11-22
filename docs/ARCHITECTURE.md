@@ -100,7 +100,7 @@ cd frontend && npm run dev
 
 ### 4.1 Обзор
 
-4 таблицы:
+3 таблицы:
 
 ```
 users
