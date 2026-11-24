@@ -1,0 +1,21 @@
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  color: #6ab2f2;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
