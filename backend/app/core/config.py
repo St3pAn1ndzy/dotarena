@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    bot_token: str
+    bot_token: str = "test_bot_token_for_dev_only"
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/dotarena"
     redis_url: str = "redis://localhost:6379/0"
     public_url: str = "http://localhost:5173"
