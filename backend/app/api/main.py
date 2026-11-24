@@ -1,9 +1,11 @@
+import uuid
+
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app.api.router import router as main_router
-from app.core.logging import logger, setup_logging
+from app.core.logging import logger, set_request_id, setup_logging
 
 setup_logging()
 
@@ -13,6 +15,9 @@ app = FastAPI()
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     """Логгирует входящие запросы и время их обработки."""
+    request_id = str(uuid.uuid4())[:8]
+    set_request_id(request_id)
+
     logger.info(
         "→ {method} {path}",
         method=request.method,
@@ -22,8 +27,14 @@ async def log_requests(request: Request, call_next):
     try:
         response = await call_next(request)
     except Exception as e:
-        logger.exception("Ошибка при обработке {path}: {error}", path=request.url.path, error=e)
+        logger.exception(
+            "Ошибка при обработке {path}: {error}",
+            path=request.url.path,
+            error=e,
+        )
         return JSONResponse(status_code=500, content={"detail": "Internal server error"})
+
+    response.headers["X-Request-ID"] = request_id
 
     logger.info(
         "← {method} {path} — {status}",
