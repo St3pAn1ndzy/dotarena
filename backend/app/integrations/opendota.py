@@ -62,6 +62,11 @@ class OpenDotaClient:
         )
         return result if isinstance(result, list) else []
 
+    async def get_player_heroes(self, steam_id: int) -> list[dict]:
+        """Возвращает статистику по героям игрока"""
+        result = await self._request(f"/players/{steam_id}/heroes")
+        return result if isinstance(result, list) else []
+
 
 # Единственный экземпляр на всё приложение
 opendota_client = OpenDotaClient()
