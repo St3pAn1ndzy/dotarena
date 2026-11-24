@@ -1,11 +1,11 @@
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException
-from fastapi.params import Query
+from fastapi.params import Depends, Query
 
 from app.core.cache import cache
 from app.core.constants import VALID_GAME_MODES
-from app.core.steam import normalize_steam_id
+from app.core.dependencies import steam_id_dependency
 from app.integrations.opendota import opendota_client
 from app.schemas.match import MatchSummary
 from app.schemas.profile import PlayerProfile
@@ -14,8 +14,7 @@ router = APIRouter(prefix="/profile", tags=["profile"])
 
 
 @router.get("/{steam_id}", response_model=PlayerProfile)
-async def get_profile(steam_id: int) -> PlayerProfile:
-    account_id = normalize_steam_id(steam_id)
+async def get_profile(account_id: int= Depends(steam_id_dependency)) -> PlayerProfile:
 
     cached = await cache.get(f"profile:{account_id}")
     if cached is not None:
@@ -41,10 +40,9 @@ async def get_profile(steam_id: int) -> PlayerProfile:
 
 @router.get("/{steam_id}/matches")
 async def get_profile_matches(
-        steam_id: int,
+        account_id: int= Depends(steam_id_dependency),
         limit: Annotated[int, Query(gt=0)] = 20,
 ) -> list[MatchSummary]:
-    account_id = normalize_steam_id(steam_id)
 
     cached = await cache.get(f"matches:{account_id}:{limit}")
     if cached is not None:
