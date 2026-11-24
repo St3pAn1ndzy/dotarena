@@ -8,6 +8,7 @@ class MatchSummary(BaseModel):
     deaths: int
     assists: int
     radiant_win: bool
+    player_slot: int
     game_mode: int
     duration: int  # в секундах
     start_time: int  # unix timestamp
