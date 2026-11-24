@@ -6,12 +6,18 @@
 
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  padding: 40px 16px;
+  min-height: 100vh;
+  background: #16213e;
 }
 
 .text {
   color: #6ab2f2;
   text-decoration: none;
   font-size: 18px;
+}
+
+.error {
+  color: #e94560;
 }
