@@ -58,7 +58,7 @@ class OpenDotaClient:
     ) -> list[dict]:
         """Возвращает список последних матчей с полной информацией об игроках"""
         result = await self._request(
-            f"/players/{steam_id}/matches?project=players&limit={limit}",
+            f"/players/{steam_id}/matches?limit={limit}",
         )
         return result if isinstance(result, list) else []
 
