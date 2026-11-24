@@ -1,7 +1,12 @@
+from typing import Annotated
+
 from fastapi import APIRouter, HTTPException
+from fastapi.params import Query
 
 from app.core.cache import cache
+from app.core.constants import VALID_GAME_MODES
 from app.integrations.opendota import opendota_client
+from app.schemas.match import MatchSummary
 from app.schemas.profile import PlayerProfile
 
 router = APIRouter(prefix="/profile", tags=["profile"])
@@ -9,7 +14,6 @@ router = APIRouter(prefix="/profile", tags=["profile"])
 
 @router.get("/{steam_id}", response_model=PlayerProfile)
 async def get_profile(steam_id: int) -> PlayerProfile:
-
     cached = await cache.get(f"profile:{steam_id}")
     if cached is not None:
         return PlayerProfile(**cached)
@@ -30,5 +34,39 @@ async def get_profile(steam_id: int) -> PlayerProfile:
     )
 
     await cache.set(f"profile:{steam_id}", result.model_dump(), ttl=300)
+
+    return result
+
+
+@router.get("/{steam_id}/matches")
+async def get_profile_matches(
+        steam_id: int,
+        limit: Annotated[int, Query(gt=0)] = 20,
+) -> list[MatchSummary]:
+    cached = await cache.get(f"matches:{steam_id}:{limit}")
+    if cached is not None:
+        return [MatchSummary(**m) for m in cached]
+
+    data = await opendota_client.get_player_matches(steam_id, limit)
+    if not data:
+        return []
+
+    # фильтрация game_mode
+    filtered = [m for m in data if m.get("game_mode") in VALID_GAME_MODES]
+    print(filtered)
+
+    result = [MatchSummary(
+        match_id=m["match_id"],
+        hero_id=m.get("hero_id", 0),
+        kills=m.get("kills", 0),
+        deaths=m.get("deaths", 0),
+        assists=m.get("assists", 0),
+        radiant_win=m.get("radiant_win", False),
+        game_mode=m.get("game_mode", 0),
+        duration=m.get("duration", 0),
+        start_time=m.get("start_time", 0),
+    ) for m in filtered]
+
+    await cache.set(f"matches:{steam_id}:{limit}", [r.model_dump() for r in result], ttl=300)
 
     return result
