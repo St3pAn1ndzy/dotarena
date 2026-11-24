@@ -1,0 +1,1 @@
+VALID_GAME_MODES = {1, 22}
