@@ -1,0 +1,63 @@
+.container {
+  margin-top: 24px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.title {
+  color: #e0e0e0;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #1a1a2e;
+  border-radius: 10px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+}
+
+.bar {
+  height: 6px;
+  background: #2a2a4e;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+
+.barFill {
+  height: 100%;
+  background: #e94560;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #a0a0a0;
+}
+
+.winrate {
+  color: #4caf50;
+  font-weight: bold;
+}
