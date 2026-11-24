@@ -1,0 +1,46 @@
+.card {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 24px;
+  background: #1a1a2e;
+  border-radius: 16px;
+  color: #e0e0e0;
+  max-width: 500px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #e94560;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.mmr {
+  margin: 0;
+  font-size: 18px;
+  color: #f5c518;
+}
+
+.rank {
+  margin: 4px 0;
+  font-size: 16px;
+  color: #a0a0a0;
+}
+
+.leaderboard {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #e94560;
+  font-weight: bold;
+}
