@@ -16,18 +16,17 @@ dependencies = [
     "alembic>=1.14,<2",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "black>=24.0,<25",
-    "ruff>=0.9,<1",
-]
-
 [tool.setuptools.packages.find]
 include = ["app*"]
 
 [build-system]
 requires = ["setuptools>=75,<76"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.6",
+]
 
 [tool.black]
 line-length = 100
