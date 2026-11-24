@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import HomePage from '../pages/HomePage/HomePage.tsx'
-import ProfilePage from '../pages/ProfilePage/ProfilePage.tsx'
-import BattlePage from '../pages/BattlePage/BattlePage.tsx'
+import HomePage from '../pages/HomePage/HomePage'
+import ProfilePage from '../pages/ProfilePage/ProfilePage'
+import BattlePage from '../pages/BattlePage/BattlePage'
 
 function App() {
   return (
