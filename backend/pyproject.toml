@@ -16,6 +16,7 @@ dependencies = [
     "pydantic-settings>=2.7,<3",
     "alembic>=1.14,<2",
     "pydantic>=2.14.4",
+    "loguru>=0.7,<1",
 ]
 
 [tool.setuptools.packages.find]
