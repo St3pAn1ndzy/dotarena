@@ -22,6 +22,11 @@ function formatTime(unix: number): string {
   })
 }
 
+function isWin(match: MatchSummary): boolean {
+  const isRadiant = match.player_slot < 128
+  return isRadiant ? match.radiant_win : !match.radiant_win
+}
+
 export default function MatchList({ matches }: Props) {
   return (
     <div className={styles.list}>
@@ -29,7 +34,7 @@ export default function MatchList({ matches }: Props) {
       {matches.map((m) => (
         <div
           key={m.match_id}
-          className={`${styles.match} ${m.radiant_win ? styles.win : styles.lose}`}
+          className={`${styles.match} ${isWin(m) ? styles.win : styles.lose}`}
         >
           <div className={styles.hero}>
             <img
@@ -43,7 +48,7 @@ export default function MatchList({ matches }: Props) {
           </div>
           <div className={styles.duration}>{formatDuration(m.duration)}</div>
           <div className={styles.time}>{formatTime(m.start_time)}</div>
-          <div className={styles.result}>{m.radiant_win ? "Победа" : "Поражение"}</div>
+          <div className={styles.result}>{isWin(m) ? "Победа" : "Поражение"}</div>
         </div>
       ))}
     </div>
