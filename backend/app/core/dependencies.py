@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import Depends, Header, HTTPException, Path
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,8 +18,8 @@ def steam_id_dependency(steam_id: int = Path(...)) -> int:
 
 
 async def get_current_user(
-    authorization: str | None = Header(None),
-    db: AsyncSession = Depends(get_db),
+        authorization: str | None = Header(None),
+        db: AsyncSession = Depends(get_db),
 ) -> User:
     """Проверяет initData Telegram и возвращает/создаёт пользователя."""
     if not authorization:
@@ -54,3 +56,7 @@ async def get_current_user(
     logger.info("Создан новый пользователь: telegram_id={id}, nickname={nick}",
                 id=telegram_id, nick=user.nickname)
     return user
+
+
+SessionDep = Annotated[AsyncSession, Depends(get_db)]
+CurrentUserDep = Annotated[User, Depends(get_current_user)]
