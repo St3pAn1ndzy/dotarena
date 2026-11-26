@@ -45,8 +45,8 @@ async def get_profile(account_id: int = Depends(steam_id_dependency)) -> PlayerP
 
 @router.get("/{steam_id}/matches")
 async def get_profile_matches(
-    account_id: int = Depends(steam_id_dependency),
-    limit: Annotated[int, Query(gt=0)] = 20,
+        account_id: int = Depends(steam_id_dependency),
+        limit: Annotated[int, Query(gt=0)] = 20,
 ) -> list[MatchSummary]:
     logger.info("Запрос матчей: account_id={id}, limit={limit}", id=account_id, limit=limit)
 
@@ -83,6 +83,10 @@ async def get_profile_matches(
     ) for m in filtered]
 
     await cache.set(f"matches:{account_id}:{limit}", [r.model_dump() for r in result], ttl=300)
-    logger.debug("Матчи сохранены в кэш: account_id={id}, count={count}", id=account_id, count=len(result))
+    logger.debug(
+        "Матчи сохранены в кэш: account_id={id}, count={count}",
+        id=account_id,
+        count=len(result)
+    )
 
     return result

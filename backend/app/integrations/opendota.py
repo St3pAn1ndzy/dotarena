@@ -57,12 +57,15 @@ class OpenDotaClient:
         return result if isinstance(result, dict) else None
 
     async def get_player_matches(
-        self,
-        steam_id: int,
-        limit: int = 20,
+            self,
+            steam_id: int,
+            limit: int = 20,
     ) -> list[dict]:
         """Возвращает список последних матчей с полной информацией об игроках"""
-        logger.info("Запрос матчей OpenDota: account_id={id}, limit={limit}", id=steam_id, limit=limit)
+        logger.info(
+            "Запрос матчей OpenDota: account_id={id}, limit={limit}",
+            id=steam_id,
+            limit=limit)
         result = await self._request(
             f"/players/{steam_id}/matches?limit={limit}",
         )

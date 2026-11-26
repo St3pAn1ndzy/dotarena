@@ -36,6 +36,10 @@ async def get_player_heroes(account_id: int = Depends(steam_id_dependency)) -> l
     ) for h in sorted_data[:10]]
 
     await cache.set(f"heroes:{account_id}", [h.model_dump() for h in top], ttl=600)
-    logger.debug("Герои сохранены в кэш: account_id={id}, count={count}", id=account_id, count=len(top))
+    logger.debug(
+        "Герои сохранены в кэш: account_id={id}, count={count}",
+        id=account_id,
+        count=len(top)
+    )
 
     return top
