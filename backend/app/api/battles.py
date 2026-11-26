@@ -58,3 +58,13 @@ async def get_user_battles(
 ) -> list[Battle]:
     result = await BattleService.get_user_battles(db=db, user=current_user)
     return result
+
+
+@router.get("/{b_id}", response_model=BattleResponse)
+async def get_battle(
+        b_id: int,
+        db: SessionDep,
+        current_user: CurrentUserDep
+) -> Battle:
+    battle = await BattleService.get_battle_by_id(db=db, id=b_id)
+    return battle
