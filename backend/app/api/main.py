@@ -5,11 +5,17 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app.api.router import router as main_router
+from app.core.exceptions import BattleError
 from app.core.logging import logger, set_request_id, setup_logging
 
 setup_logging()
 
 app = FastAPI()
+
+
+@app.exception_handler(BattleError)
+async def battle_error_handler(request, exc: BattleError):
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.message})
 
 
 @app.middleware("http")
