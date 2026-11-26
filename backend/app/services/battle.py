@@ -204,8 +204,42 @@ class BattleService:
         await db.commit()
 
     @staticmethod
-    async def check_expired(db: AsyncSession) -> Any:
-        pass
+    async def check_expired(db: AsyncSession) -> None:
+        """Завершает баттлы, у которых истекло время.
+
+        - pending баттлы старше 24ч → cancelled
+        - active баттлы старше 48ч от starts_at → finished (ничья, winner_id = None)
+        """
+        now = datetime.now(UTC)
+
+        # Просроченные pending (ожидают принятия больше 24ч)
+        expired_pending = await db.scalars(
+            select(Battle).where(
+                Battle.status == BattleStatus.pending.value,
+                Battle.created_at < now,
+            )
+        )
+
+        for battle in expired_pending.all():
+            battle.status = BattleStatus.cancelled.value
+            battle.finished_at = now
+            logger.info("Истёк pending баттл {id}", id=battle.id)
+
+        # Просроченные active (активны больше 48ч от starts_at)
+        expired_active = await db.scalars(
+            select(Battle).where(
+                Battle.status == BattleStatus.active.value,
+                Battle.starts_at < now,
+            )
+        )
+
+        for battle in expired_active.all():
+            battle.status = BattleStatus.finished.value
+            battle.winner_id = None  # ничья
+            battle.finished_at = now
+            logger.info("Истёк active баттл {id} — ничья", id=battle.id)
+
+        await db.commit()
 
     @staticmethod
     async def get_battle_by_id(db: AsyncSession, id: int) -> Battle:
